@@ -1,0 +1,42 @@
+<div class="center-form mt-4 mb-5">
+    <div class="p-2 pe-5">
+        <h2 class="mb-4">Edit Profile</h2>
+        <form [formGroup]="profileForm">
+            <div class="mb-3">
+                <label  class="form-label">Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="name">
+                <div  class="form-text text-danger" *ngIf="profileForm.get('name')?.dirty && profileForm.get('name')?.errors">
+                    {{getErrorMsg('name',3)}}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label  class="form-label">Email address <span
+                        class="text-danger">*</span></label>
+                <input type="email" class="form-control" formControlName="email">
+                <div  class="form-text text-danger" *ngIf="profileForm.get('email')?.dirty && profileForm.get('email')?.errors">
+                    {{getErrorMsg('email')}}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label  class="form-label">Location <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="location">
+                <div  class="form-text text-danger" *ngIf="profileForm.get('location')?.dirty && profileForm.get('location')?.errors">
+                    {{getErrorMsg('location')}}
+                </div>
+            </div>
+            <div class="mb-3" *ngIf="profileForm.get('exprience')">
+                <label  class="form-label">Exprience </label>
+                <textarea rows="3" class="form-control pe-4" formControlName="exprience"> </textarea>
+            </div>
+            <div class="mb-3" *ngIf="profileForm.get('projects')">
+                <label class="form-label">Projects </label>
+                <textarea rows="3" class="form-control pe-4" formControlName="projects"> </textarea>
+            </div>
+            <div class="mb-3" *ngIf="profileForm.get('skills')">
+                <label class="form-label">Skills </label>
+                <textarea rows="3" class="form-control pe-4" formControlName="skills"> </textarea>
+            </div>
+            <button type="button" [ngClass]="{'disabled':profileForm?.invalid}" class="btn btn-primary btn-form" (click)="submitProfile()" >Submit</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<!-- side bar -->
+<div class="landing_comp-height">
+    <div class="row" style="margin-right: 0;">
+        <div class="" style="width: 280px;">
+            <div class="d-flex flex-column flex-shrink-0 p-3">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <ng-container *ngFor="let tab of leftPanelTabs; let tabIndex = index">
+                    <li class="nav-item mt-2 mb-2" *ngIf="tab?.show">
+                        <a class="nav-link cursor-pointer" [ngClass]="{'active':tab?.active}" aria-current="page" (click)="changeTab(tabIndex)">
+                           {{tab?.name}}
+                        </a>
+                    </li>
+                </ng-container>
+                </ul>
+            </div>
+        </div>
+        <div class="col bg-color pt-4 ver-scroll">
+            <div>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- side bar -->

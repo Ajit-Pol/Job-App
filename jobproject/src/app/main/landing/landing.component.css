@@ -1,0 +1,16 @@
+.landing_comp-height{
+    min-height: 500px
+}
+
+.nav-link{
+    color: black;
+}
+
+.ver-scroll{
+    overflow-y: auto;
+    height: 500px;
+}
+
+.bg-color{
+    background-color: #f2f2f2;
+}

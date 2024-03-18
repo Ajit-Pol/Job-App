@@ -1,0 +1,7 @@
+.header_c{
+    top: 0;
+    z-index: 999;
+}
+.app_name{
+    font-size: 2rem;
+}

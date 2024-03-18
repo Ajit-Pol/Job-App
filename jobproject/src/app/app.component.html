@@ -1,0 +1,54 @@
+<div class="position-relative">
+  <ng-container *ngIf="isUserAuthorized">
+    <!-- header component -->
+    <app-header *ngIf="showHeaderAndFooter"></app-header>
+    <!-- header component -->
+
+    <!-- toaster messages component -->
+    <app-toaster></app-toaster>
+    <!-- toaster messages component -->
+
+    <router-outlet></router-outlet>
+
+    <!-- footer component  -->
+    <app-footer *ngIf="showHeaderAndFooter"></app-footer>
+    <!-- footer component  -->
+  </ng-container>
+
+  <ng-container *ngIf="!isUserAuthorized">
+    <!-- using not found comp for showing unauthorized url messages -->
+    <app-not-found *ngIf="!isUserAuthorized" 
+    [message]="unauthorizedMsg"
+    [secondaryMessage]="unauthorizedSecMsg"
+    ></app-not-found>
+    <!-- unauthorized url messages -->
+  </ng-container>
+
+  <!-- spinner -->
+  <ngx-spinner [fullScreen]="true" type="ball-spin-clockwise" size="medium"></ngx-spinner>
+  <!-- spinner -->
+  
+</div>
+
+
+<!-- 
+  Flow =>
+    Creator -> Can add new Job, Edit, Delete - done
+               Need to remove Status column - done
+               profile - on hold
+              Search bar in all jobs page (pipe functionality) - done
+    
+    Reader -> Profile update need to bo done (Skills, Exprience, Projects, (ResumeUpload - on hold)) - done
+              Add Jobs won't be visible to reader - done
+              Search bar in all jobs page (pipe functionality) - done
+              OnClick on apply mail to be send to respective user - on hold
+    
+    common changes - spinner - done
+                     forgot password - pending (required email functionality to implement);
+                     tile click issue - done
+                     footer border width - done
+                     if search not match then show search not found message - done
+                     custom scroll bar  - pending 
+                     Pagination -   on hold 
+
+ -->

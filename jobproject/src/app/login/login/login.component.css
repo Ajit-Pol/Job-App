@@ -1,0 +1,33 @@
+.center-form {
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-form{
+    width: 450px;
+    border-top: 5px solid #0d6efd;
+}
+
+.btn-form{
+    width: 100%;
+}
+
+.-active{
+    display: block;
+}
+
+.eye-top {
+    top: 49px;
+}
+
+.info-msg {
+    margin-right: 40%;
+    font-size: 12px;
+}
+
+.c_number::-webkit-outer-spin-button,
+.c_number::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

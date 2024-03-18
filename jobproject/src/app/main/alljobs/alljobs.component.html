@@ -1,0 +1,38 @@
+<div class="search_bar">
+    <div class="input-group search_width mb-3 pt-3">
+        <input type="text" class="form-control me-2" placeholder="Search with Position..." [(ngModel)]="searchKey">
+    </div>
+</div>
+
+<div class="row">
+    <ng-container *ngIf="(jobsList | search : searchKey)?.length > 0; else nodata" >
+        <div class="col-sm-6 mt-4 mb-4 center_card" *ngFor="let job of jobsList | search : searchKey">
+            <div class="card c_card" [ngClass]="{'cursor-pointer':userRole == 'reader'}">
+                <div class="card-body" (click)="navigateTOJobDetails(job?._id)">
+                    <h5 class="card-title"> {{job?.position}} </h5>
+                    <h6 class="card-subtitle mb-2 text-muted"> {{job?.company}} </h6>
+                    <p class="card-text c_ellipse desc_h"> {{job?.description}} </p>
+                    <div class="row">
+                        <div class="col-sm-6 p-2 card-text"> {{job?.type}} </div>
+                        <div class="col-sm-6 p-2 card-text"> {{job?.createdAt | date: 'mediumDate'}} </div>
+                        <!-- <div class="col-sm-6 p-2 card-text"> {{job?.status}} </div> -->
+                        <div class="col-sm-6 p-2 card-text"> {{job?.location}} </div>
+                    </div>
+                    <div class="row" *ngIf="userRole == 'creator'">
+                        <!-- <div> -->
+                        <button class="col card-link btn btn-link" (click)="editJob(job?._id)">Edit</button>
+                        <button class="col card-link btn btn-link" (click)="deleteJob(job?._id)">Delete</button>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-template #nodata>
+        <div class="mt-4 mb-4 center_card">
+            <strong>Oops!</strong>&nbsp;We couldn't find any results matching your search criteria. Please try again with different keywords or refine
+            your search.
+        </div>
+    </ng-template>
+</div>

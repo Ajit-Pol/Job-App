@@ -1,0 +1,43 @@
+<div class="center-form mt-5 mb-5">
+    <div class="shadow p-5 bg-white rounded login-form">
+        <h2 class="center pb-2 app_border-bottom app_name">JOBS</h2>
+        <h3 class="center mb-4">Register</h3>
+        <form [formGroup]="registerForm" >
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="name" [maxlength]="50">
+                <div class="form-text text-danger" *ngIf="registerForm.get('name')?.dirty && registerForm.get('name')?.errors"> {{getErrorMsg('name',3)}} </div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label" >Email address <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" formControlName="email">
+                <div class="form-text text-danger" *ngIf="registerForm.get('email')?.dirty &&  registerForm.get('email')?.errors"> {{getErrorMsg('email')}} </div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Location <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="location">
+                <div class="form-text text-danger" *ngIf="registerForm.get('location')?.dirty && registerForm.get('location')?.errors"> {{getErrorMsg('location')}} </div>
+            </div>
+            <div class="mb-3 position-relative">
+                <label for="exampleInputEmail1" class="form-label">Password <span class="text-danger">*</span></label>
+                <input type="password" id="password" class="form-control pe-4" formControlName="password">
+                <img class="form-eye-img cursor-pointer" src="assets/images/eye.svg" alt="eye icon" (click)="showHidePassword('password')">
+                <div class="form-text text-danger" *ngIf="registerForm.get('password')?.dirty && registerForm.get('password')?.errors"> {{getErrorMsg('password')}} </div>
+            </div>
+            <div class="mb-3 position-relative">
+                <label for="exampleInputPassword1" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                <input type="password" id="confirm-password" class="form-control pe-4" formControlName="confirmPassword">
+                <img class="form-eye-img cursor-pointer" src="assets/images/eye.svg" alt="eye icon" (click)="showHidePassword('confirm-password')">
+                <div  class="form-text text-danger" *ngIf="passwordErrorMsg"> {{passwordErrorMsg}} </div>
+            </div>
+            <div class="mb-3">
+                <div class="form-text text-danger" *ngIf="errorMsg"> {{errorMsg}} </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-form" 
+            [ngClass]="{'disabled':registerForm.invalid || passwordErrorMsg}"
+            (click)="register()" >Submit</button>
+            <div class="center mt-2">Already a member?&nbsp;<a class="text-primary cursor-pointer" (click)="navigateToLogin()">Login</a>
+            </div>
+        </form>
+    </div>
+</div>

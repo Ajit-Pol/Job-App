@@ -1,0 +1,76 @@
+<div class="center-form mt-5 mb-5">
+    <div class="shadow p-5 bg-white rounded login-form">
+        <h2 class="center pb-2 app_border-bottom app_name">JOBS</h2>
+        <h3 class="center mb-4">Login</h3>
+        <form [formGroup]="loginForm">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" formControlName="email">
+            </div>
+            <div class="mb-3 position-relative">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" id="password" class="form-control" formControlName="password">
+                <img class="form-eye-img cursor-pointer" src="assets/images/eye.svg" alt="eye icon"
+                    (click)="showHidePassword('password')">
+            </div>
+            <div class="mb-3" *ngIf="errorMsg">
+                <div class="form-text text-danger"> {{errorMsg}} </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-form" (click)="login()">Login</button>
+            <div class="center mt-2">Not a member yet?&nbsp;<a class="text-primary cursor-pointer"
+                    (click)="navigateToRegister()">Register</a>
+            </div>
+            <div class="center mt-2">Forgot password?&nbsp;<a class="text-primary cursor-pointer"
+                    (click)="forgotPassward()">Click here</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Forgot password  modal -->
+
+<div class="modal fade show" [ngClass]="{'-active':showModal}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3" *ngIf="status == 'email'">
+                    <label  class="col-form-label">Registered Email Address: </label>
+                    <input type="text" class="form-control"  [(ngModel)]="controlValue">
+                </div>
+                <div class="mb-3" *ngIf="status == 'otp'">
+                    <label  class="col-form-label"> Enter One-Time Password (OTP): </label>
+                    <input type="number" class="form-control c_number"  [(ngModel)]="controlValue">
+                </div>
+                <ng-container *ngIf="status=='password'">
+                    <div class="mb-3  position-relative">
+                        <label  class="col-form-label"> Password </label>
+                        <input type="password" id="f-password" class="form-control" 
+                            [(ngModel)]="controlValue" (ngModelChange)="onChangeInPassword()">
+                        <img class="form-eye-img cursor-pointer eye-top" src="assets/images/eye.svg" alt="eye icon"
+                            (click)="showHidePassword('f-password')">
+                    </div>
+                    <div class="mb-3  position-relative">
+                        <label  class="col-form-label"> Confirm Password </label>
+                        <input type="password" id="f-c-password" class="form-control"  [(ngModel)]="controlValue2"
+                            (ngModelChange)="confirmPassword()">
+                        <img class="form-eye-img cursor-pointer eye-top" src="assets/images/eye.svg" alt="eye icon"
+                            (click)="showHidePassword('f-c-password')">
+                    </div>
+                </ng-container>
+                <div class="mb-3" *ngIf="errorMsg2">
+                    <div class="form-text text-danger"> {{errorMsg2}} </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p class="info-msg text-danger">Please do not refresh this page.</p>
+                <button type="button" class="btn btn-primary" (click)="forgotPassAction()"> {{controlButtton}} </button>
+            </div>
+        </div>
+    </div>
+</div>
