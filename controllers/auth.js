@@ -1,6 +1,8 @@
 const UserSchema = require('../dbmodels/auth');
+const OTP = require('../dbmodels/otp');
 const { StatusCodes } = require('http-status-codes');
-const { UnauthenticatedError, NotFoundError } = require('../errors');
+const bcrypt = require('bcryptjs');
+const { UnauthenticatedError, NotFoundError, BadRequestError } = require('../errors');
 
 const register = async (req, res, next) => {
     const reqData = req.body;
@@ -45,10 +47,51 @@ const saveProfile = async (req, res) => {
     res.status(StatusCodes.OK).json({ success: true, msg: 'Profile updated successfully.' })
 }
 
+validateOTP = async (req, res) => {
+    const { otp } = req.body;
+    if (!otp)
+        throw new BadRequestError('Provide OTP');
+
+    const data = await OTP.findOne({
+        otp: otp,
+        expireIn: { $gte: Date.now() }
+    })
+
+    if(!data)
+        throw new BadRequestError('Invalid OTP');
+
+    // delete otp once it's validated 
+    await OTP.findByIdAndDelete({
+        _id: data._id
+    })
+
+    res.status(StatusCodes.OK).json({ success:true })
+}
+
+const saveNewPassword = async (req, res) => {
+    let { email, password } = req.body;
+
+    const salt = await bcrypt.genSalt(10)
+    password = await bcrypt.hash(password, salt);
+
+    const user = await UserSchema.findOneAndUpdate({
+        email: email,
+    }, {
+        password: password
+    }, { new: true, runValidators: true })
+
+    if (!user)
+        throw new BadRequestError();
+
+    res.status(StatusCodes.OK).json({ success: true, msg: 'Password updated successfully.' })
+}
+
 module.exports = {
     register,
     login,
     getProfile,
-    saveProfile
+    saveProfile,
+    validateOTP,
+    saveNewPassword
 }
 

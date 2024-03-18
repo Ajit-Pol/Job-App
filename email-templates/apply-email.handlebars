@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Confirmation: {{position}}</title>
+</head>
+
+<body>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="text-align: center;">Application Confirmation: {{position}}</h2>
+        <p>Dear Applicant,</p>
+        <p>Thank you for your recent application for the position of <strong>{{position}}</strong> at
+            <strong>{{company}}</strong>. We appreciate your interest in joining our team.</p>
+        <p>We would like to confirm that we have received your application. Here are the details of the job you applied
+            for:</p>
+        <ul>
+            <li><strong>Job Position:</strong> {{position}}</li>
+            <li><strong>Company Name:</strong> {{company}}</li>
+            <li><strong>Location:</strong> {{location}}</li>
+        </ul>
+        <p>We will review your application carefully and get back to you as soon as possible regarding the next steps in
+            the hiring process.</p>
+        <p>If you have any questions or need further information, feel free to reach out to us at [Company Contact
+            Email] or [Company Contact Phone Number].</p>
+        <p>Thank you again for considering employment opportunities with {{company}}.</p>
+        <p>Best regards,</p>
+        <p>Ajit<br>
+            Hiring Manager/Recruitment Team<br>
+            {{company}}
+            {{!-- <br>
+            [Company Contact Email]<br>
+            [Company Contact Phone Number] --}}
+            </p>
+    </div>
+</body>
+
+</html>

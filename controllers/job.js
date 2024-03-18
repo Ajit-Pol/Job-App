@@ -69,11 +69,17 @@ const deleteJob = async (req, res) => {
 
     res.status(StatusCodes.OK).json({msg:"Deleted successfully"});
 }
+ 
+const jobApplyEmail =  async (req, res) => {
+
+}
+
 
 module.exports = {
     getAllJobs,
     getJob,
     createJob,
     updateJob,
-    deleteJob
+    deleteJob,
+    jobApplyEmail
 }
