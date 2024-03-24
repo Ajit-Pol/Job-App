@@ -36,7 +36,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       provide: APP_INITIALIZER,
       deps: [AuthService],
       multi: true,
-      useFactory: () => () => {}
+      useFactory: (authService:AuthService) => () => {
+        authService.onLoad().subscribe((res:any)=>{
+          if(res?.success){
+            authService.loginStatus(true);
+            authService.setUser(res.user);
+          }
+        })
+      }
     },
     {
       provide: HTTP_INTERCEPTORS,

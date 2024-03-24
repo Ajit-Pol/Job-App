@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
 const path = require('path');
 const { StatusCodes } = require('http-status-codes');
-const OTP = require('../dbmodels/otp');
+const {OTP} = require('../dbmodels/other-models');
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',

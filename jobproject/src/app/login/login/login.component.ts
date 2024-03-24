@@ -46,8 +46,8 @@ export class LoginComponent implements OnInit {
       payload.email = this.loginForm.get('email').value;
       payload.password = this.loginForm.get('password').value;
       this.loginService.login(payload).subscribe((res: AuthInfo) => {
-        if (res?.success && res?.accessToken) {
-          this.authService.setUser(res);
+        if (res?.success) {
+          this.authService.setUser(res?.user);
           this.router.navigateByUrl('/main');
         }
         this.spinner.hide();

@@ -1,11 +1,20 @@
+// import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject} from 'rxjs';
+import { AppService } from './app.service';
 
-interface AuthInfo  {
-  success:boolean;
-  accessToken:string;
-  expiresIn:number;
-  user:{name:string, role:string};
+// interface AuthInfo {
+//   success: boolean;
+//   accessToken: string;
+//   expiresIn: number;
+//   user: { name: string, role: string };
+// }
+
+interface UserInfo {
+  name: string, 
+  role: string
 }
 
 @Injectable({
@@ -14,25 +23,41 @@ interface AuthInfo  {
 export class AuthService implements OnDestroy {
 
   private isUserLoggedIn: boolean = false;
-  private userInfo:AuthInfo = null; 
-  constructor( private router:Router
-    // private http: HttpClient
+  // private userInfo: UserInfo = null;
+  private apiUrl: string = null;
+  private userRole: BehaviorSubject<string> = new BehaviorSubject<string>('reader');
+  private userInfo: BehaviorSubject<UserInfo> = new BehaviorSubject<UserInfo>(null);
+  constructor(private router: Router,
+    private appService: AppService,
+    private http: HttpClient
   ) {
-    this.onLoad();
+    this.apiUrl = this.appService.environment.APIUrl;
     this.eventListener();
-   }
+  }
 
-   onLoad(){
-    const userInfo = this.getUser();
-    if(this.validateUser(userInfo))
-      this.userInfo = userInfo;
-    else
-      this.logOut();
-   }
+  onLoad(){    
+    // const userInfo = this.getUser();
+    // if(this.validateUser(userInfo))
+    //   this.userInfo = userInfo;
+    // else
+    //   this.logOut();
 
-   eventListener(){
+    return this.http.get(this.apiUrl + 'auth/token', { withCredentials: true, responseType: 'json' });
+  }
+
+  refreshAcessToken() {
+    return this.http.get(this.apiUrl + 'auth/refresh', { responseType: 'json' })
+  }
+
+  loginStatus(navigate:boolean = false){
+    this.isUserLoggedIn = true;
+    if (navigate)
+      this.router.navigateByUrl('main');
+  }
+
+  eventListener() {
     window.addEventListener('storage', this.storageEventListener.bind(this))
-   }
+  }
 
   storageEventListener(event: StorageEvent) {
     if (event.storageArea == localStorage) {
@@ -43,7 +68,7 @@ export class AuthService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('storage',this.storageEventListener.bind(this));
+    window.removeEventListener('storage', this.storageEventListener.bind(this));
   }
 
   setLocalStorage(key: string, value: string) {
@@ -51,60 +76,67 @@ export class AuthService implements OnDestroy {
   }
 
   checkIfUserLoggedIn() {
-    if(!this.validateUser(this.userInfo)){
-      this.isUserLoggedIn = false;
-    }
+    // if(!this.validateUser(this.userInfo)){
+    //   this.isUserLoggedIn = false;
+    // }
     return this.isUserLoggedIn;
   }
 
-  setUser(data:AuthInfo){
-    localStorage.setItem('user', JSON.stringify(data));
-    this.userInfo = data;
+  setUser(data: UserInfo) {
+    // localStorage.setItem('user', JSON.stringify(data));
+    this.userInfo.next(data);
     this.isUserLoggedIn = true;
   }
 
-  getUser(): AuthInfo {
-    if (this.userInfo) {
-      return this.userInfo;
-    } else {
-      let user: AuthInfo = JSON.parse(localStorage.getItem('user'));
-      if (user && user.accessToken) {
-        this.userInfo = user;
-        this.isUserLoggedIn = true;
-        return user;
-      }
-      return null;
-    }
+  getUser(){
+    // if (this.userInfo) {
+    //   return this.userInfo;
+    // } 
+    // else {
+    //   let user: AuthInfo = JSON.parse(localStorage.getItem('user'));
+    //   if (user && user.accessToken) {
+    //     this.userInfo = user;
+    //     this.isUserLoggedIn = true;
+    //     return user;
+    //   }
+    // }
+    return this.userInfo.asObservable();;
   }
 
-  getAccessToken(): string {Date.now()
-    if (this.validateUser(this.userInfo))
-      return this.userInfo.accessToken;
-    return null;
+  // getAccessToken(): string {
+  //   Date.now()
+  //   if (this.validateUser(this.userInfo))
+  //     return this.userInfo.accessToken;
+  //   return null;
+  // }
+
+  // validateUser(userInfo: AuthInfo): boolean {
+  //   if (!(userInfo && userInfo.accessToken))
+  //     return false
+
+  //   if (Date.now() > userInfo.expiresIn)
+  //     return false;
+
+  //   return true
+  // }
+
+  getUserRole() {
+    return this.userRole.asObservable();
   }
 
-  validateUser(userInfo:AuthInfo):boolean {
-    if(!(userInfo && userInfo.accessToken))
-      return false
-
-    if(Date.now() > userInfo.expiresIn)
-      return false;
-
-    return true
+  setUserRole(role: string) {
+    this.userRole.next(role);
   }
 
-  getUserRole():string{
-    if(this.userInfo)
-      return this.userInfo.user.role;
-    return null;
-  }
+  logOut(navigate: boolean = false) {
+    this.http.get(this.apiUrl + 'auth/logout', { responseType: 'json' }).subscribe(_res => {
+      this.userInfo = null;
+      localStorage.clear();
+      this.isUserLoggedIn = false;
+      console.log('logout');
 
-  logOut(navigate:boolean = false){
-    this.userInfo = null;
-    localStorage.clear();
-    this.isUserLoggedIn = false;
-    if(navigate)
-      this.router.navigateByUrl('login');
+      if (navigate)
+        this.router.navigateByUrl('login');
+    })
   }
-
 }

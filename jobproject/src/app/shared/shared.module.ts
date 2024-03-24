@@ -5,6 +5,7 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ToasterComponent } from './toaster/toaster.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ToasterComponent } from './toaster/toaster.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     SharedRoutingModule
   ],
   exports:[

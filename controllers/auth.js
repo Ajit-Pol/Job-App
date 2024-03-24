@@ -1,8 +1,14 @@
 const UserSchema = require('../dbmodels/auth');
-const OTP = require('../dbmodels/otp');
+const { OTP, TOKEN } = require('../dbmodels/other-models');
 const { StatusCodes } = require('http-status-codes');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { UnauthenticatedError, NotFoundError, BadRequestError } = require('../errors');
+const cookieOptions = {
+    httpOnly: true,
+    SameSite: process.env.NODE_ENV == 'production' ? 'Lax' : 'None',
+    secure: process.env.NODE_ENV == 'production'
+}
 
 const register = async (req, res, next) => {
     const reqData = req.body;
@@ -21,8 +27,23 @@ const login = async (req, res) => {
         throw new UnauthenticatedError('Invalid email or password. Please check your credentials and try again.');
 
 
-    const token = user.createJWT();
-    res.status(StatusCodes.OK).json({ success: true, user: { name: user.name, role: user.role }, accessToken: token, expiresIn: (Date.now() + Number(process.env.JWT_LFIETIME)) })
+    const accessToken = user.createJWT();
+    const refreshToken = user.createRefreshToken();
+    
+    const token = await TOKEN.findOneAndUpdate({
+        userId: user._id
+    }, {
+        refreshToken: refreshToken
+    }, { new: true, runValidators: true })
+    
+    if (!token)
+        await TOKEN.create({ userId: user._id, refreshToken: refreshToken })
+
+    res.status(StatusCodes.OK)
+        .cookie("accessToken", accessToken, cookieOptions)
+        .cookie("refreshToken", refreshToken, cookieOptions)
+        .json({ success: true, user: { name: user.name, role: user.role } });
+    // res.status(StatusCodes.OK).json({ success: true, user: { name: user.name, role: user.role }, accessToken: token, expiresIn: (Date.now() + Number(process.env.ACCESS_TOKEN_LIFETIME)) })
 }
 
 const getProfile = async (req, res) => {
@@ -57,7 +78,7 @@ validateOTP = async (req, res) => {
         expireIn: { $gte: Date.now() }
     })
 
-    if(!data)
+    if (!data)
         throw new BadRequestError('Invalid OTP');
 
     // delete otp once it's validated 
@@ -65,7 +86,7 @@ validateOTP = async (req, res) => {
         _id: data._id
     })
 
-    res.status(StatusCodes.OK).json({ success:true })
+    res.status(StatusCodes.OK).json({ success: true })
 }
 
 const saveNewPassword = async (req, res) => {
@@ -86,12 +107,52 @@ const saveNewPassword = async (req, res) => {
     res.status(StatusCodes.OK).json({ success: true, msg: 'Password updated successfully.' })
 }
 
+const refreshAccessToken = async (req, res) => {
+    const reqRefreshToken = req.cookies.refreshToken;
+
+    if (!reqRefreshToken)
+        throw new UnauthenticatedError('Provide refresh token.');
+
+    const decodedToken = jwt.verify(reqRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    const tokenDetails = await TOKEN.findOne({ userId: decodedToken?.userId });
+    const user = await UserSchema.findById(tokenDetails.userId);
+
+    if (!user)
+        throw new UnauthenticatedError('Refresh token invalid or expired.');
+
+    if (tokenDetails.refreshToken !== reqRefreshToken)
+        throw new UnauthenticatedError('Invalid refresh token.');
+
+    const accessToken = user.createJWT();
+    const refreshToken = user.createRefreshToken();
+    await TOKEN.findOneAndUpdate({
+        userId: user._id
+    }, {
+        refreshToken: refreshToken
+    }, { new: true, runValidators: true })
+
+    res.status(StatusCodes.OK)
+        .cookie("accessToken", accessToken, cookieOptions)
+        .cookie("refreshToken", refreshToken, cookieOptions)
+        .json({ success: true, user: { name: user.name, role: user.role } });
+}
+
+const logOut = (req, res)=>{
+    res.status(StatusCodes.OK)
+    .clearCookie("accessToken")
+    .clearCookie("refreshToken")
+    .json({ success: true, msg: "Logout successfully." });
+}
+
 module.exports = {
     register,
     login,
     getProfile,
     saveProfile,
     validateOTP,
-    saveNewPassword
+    saveNewPassword,
+    refreshAccessToken,
+    logOut
 }
 

@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { ToasterMessages, ToasterType } from 'src/app/shared/shared.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-job-details',
@@ -17,16 +18,24 @@ export class JobDetailsComponent implements OnInit {
   jobUId: string = null;
   jobDetails: JobDetails = null;
   userRole: string = null;
+  subscription:Subscription;
 
   constructor(private router: Router, private mainService: MainService,
     private activatedRoute: ActivatedRoute, private authService: AuthService,
     private toasterService: ToasterService, private spinner: NgxSpinnerService) {
-    this.userRole = this.authService.getUserRole();
+      this.subscription = this.authService.getUserRole().subscribe(res => {
+        if (res)
+          this.userRole = res
+      })
   }
 
   ngOnInit() {
     this.jobUId = this.activatedRoute.snapshot.paramMap.get('id');
     this.getJobDetails();
+  }
+
+  ngOnDestory(){
+    this.subscription.unsubscribe();
   }
 
   getJobDetails() {

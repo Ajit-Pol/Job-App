@@ -27,7 +27,10 @@ app.use(rateLimiter({
   legacyHeaders: false,
 }))
 app.use(helmet());
-app.use(cors())
+
+const corsOptions = process.env.NODE_ENV == 'production' ? {} : {credentials: true, origin: 'http://localhost:4200'} ;
+app.use(cors(corsOptions))
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

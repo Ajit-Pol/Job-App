@@ -56,7 +56,11 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.methods.createJWT = function () {
-    return jwt.sign({ userId: this._id, name: this.name, role:this.role}, process.env.JWT_SECRET, { expiresIn: process.env.JWT_LFIETIME })
+    return jwt.sign({ userId: this._id, name: this.name, role:this.role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFETIME })
+}
+
+UserSchema.methods.createRefreshToken = function () {
+    return jwt.sign({ userId: this._id}, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_LIFETIME })
 }
 
 UserSchema.methods.comparePassword = function (userInput) {

@@ -12,8 +12,6 @@ export class Register {
 
 export interface AuthInfo  {
     success:boolean;
-    accessToken:string;
-    expiresIn:number;
     user:{name:string, role:string};
 }
 

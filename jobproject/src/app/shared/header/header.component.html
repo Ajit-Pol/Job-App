@@ -6,13 +6,25 @@
 
     <div class="d-flex align-items-center">
       <div class="w-100 me-3"></div>
+      <div class="w-100 me-3"></div>
+      <div class="w-100 me-3">
+        <div class="form-check form-switch  position-relative">
+          <label class="form-check-label lable-left">Creator</label>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="toggleValue" (ngModelChange)="toggleRole()">
+            <span class="slider round"></span>
+          </label>
+          <label class="form-check-label lable-right">Reader</label>
+        </div>
+      </div>
+      <div class="w-100 me-3"></div>
       <div class="flex-shrink-0 dropdown">
         <a class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown"
           aria-expanded="false">
           <img src="assets/images/no-profile.svg" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-          <li><a class="dropdown-item"> {{userInfo?.user?.name}} </a></li>
+          <li><a class="dropdown-item"> {{userInfo?.name}} </a></li>
           <hr class="m-1">
           <li><a class="dropdown-item cursor-pointer" (click)="logOut()">Log out</a></li>
         </ul>

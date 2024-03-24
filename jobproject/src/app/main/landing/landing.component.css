@@ -1,5 +1,5 @@
 .landing_comp-height{
-    min-height: 500px
+    min-height: 100%
 }
 
 .nav-link{
@@ -8,7 +8,7 @@
 
 .ver-scroll{
     overflow-y: auto;
-    height: 500px;
+    /* height: 500px; */
 }
 
 .bg-color{

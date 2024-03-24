@@ -6,6 +6,7 @@ import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { ToasterMessages, ToasterType } from 'src/app/shared/shared.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-alljobs',
@@ -17,15 +18,23 @@ export class AlljobsComponent {
   jobsListCopy: JobDetails[] = [];
   userRole:string = null;
   searchKey:string = null;
+  subscription:Subscription;
 
   constructor(private mainService: MainService, private router: Router,
     private toasterService: ToasterService, private authService:AuthService, 
     private spinner: NgxSpinnerService) {
-        this.userRole = this.authService.getUserRole();
+      this.subscription = this.authService.getUserRole().subscribe(res => {
+        if (res)
+          this.userRole = res
+      })
      }
 
   ngOnInit() {
     this.getAllJobs()
+  }
+
+  ngOnDestory(){
+    this.subscription.unsubscribe();
   }
 
   getAllJobs() {

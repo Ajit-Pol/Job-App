@@ -6,6 +6,7 @@ import { MainService } from '../main.service';
 import { ToasterMessages, ToasterType } from 'src/app/shared/shared.model';
 import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -17,21 +18,30 @@ export class ProfileComponent implements OnInit {
   userRole: string = null;
   profileForm: FormGroup;
   validationMessage = ValidationMessages;
+  subscription:Subscription;
+
 
   constructor(private authService: AuthService, private toasterService:ToasterService,
     private formBuilder: FormBuilder, private mainService: MainService, private spinner: NgxSpinnerService) {
-    this.userRole = this.authService.getUserRole();
+      this.subscription = this.authService.getUserRole().subscribe(res => {
+        if (res)
+          this.userRole = res
+          this.createForm()
+      })
   }
 
   ngOnInit() {
-    this.createForm()
-    this.getProfile();
+    // this.createForm()
+  }
+
+  ngOnDestory(){
+    this.subscription.unsubscribe();
   }
 
   createForm() {
     this.profileForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      email: [{value:'', disable:true }, [Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       location: ['', Validators.required],
     })
 
@@ -43,6 +53,8 @@ export class ProfileComponent implements OnInit {
         skills: [''],
       })
     }
+
+    this.getProfile();
   }
 
   getProfile() {
@@ -70,6 +82,12 @@ export class ProfileComponent implements OnInit {
     this.mainService.saveProfile(this.profileForm.value).subscribe(res=>{
       if (res) {
         this.toasterService.showToaster(ToasterType.success, ToasterMessages.save);
+        const user = {
+          name: this.profileForm.value.name,
+          role: this.userRole
+        }
+
+        this.authService.setUser(user);
       } else {
         this.toasterService.showToaster(ToasterType.warning, ToasterMessages.errorMsg);
       }
