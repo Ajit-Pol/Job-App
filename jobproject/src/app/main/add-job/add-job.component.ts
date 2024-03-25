@@ -85,6 +85,7 @@ export class AddJobComponent implements OnInit {
       this.mainService.saveNewJob(saveJob).subscribe((res: any) => {
         if (res) {
           this.toasterService.showToaster(ToasterType.success, ToasterMessages.save);
+          this.addJobForm.reset();
         } else {
           this.toasterService.showToaster(ToasterType.warning, ToasterMessages.errorMsg);
         }

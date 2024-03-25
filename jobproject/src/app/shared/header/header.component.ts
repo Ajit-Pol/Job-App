@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleRole(){
+    this.toggleValue = !this.toggleValue;
     if(this.toggleValue)
       this.currentRole = 'reader'
     else

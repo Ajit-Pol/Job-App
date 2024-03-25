@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         if(this.userRole == 'reader' && this.router.url.includes('add-job')){
           this.router.navigateByUrl('/main');
         }
-      
+
     })
   }
 

@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
       this.loginService.login(payload).subscribe((res: AuthInfo) => {
         if (res?.success) {
           this.authService.setUser(res?.user);
-          this.router.navigateByUrl('/main');
+          this.authService.loginStatus(true);
         }
         this.spinner.hide();
       }, (error) => {

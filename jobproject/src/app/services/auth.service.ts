@@ -27,6 +27,7 @@ export class AuthService implements OnDestroy {
   private apiUrl: string = null;
   private userRole: BehaviorSubject<string> = new BehaviorSubject<string>('reader');
   private userInfo: BehaviorSubject<UserInfo> = new BehaviorSubject<UserInfo>(null);
+  stateUrl:string = null;
   constructor(private router: Router,
     private appService: AppService,
     private http: HttpClient
@@ -49,10 +50,15 @@ export class AuthService implements OnDestroy {
     return this.http.get(this.apiUrl + 'auth/refresh', { responseType: 'json' })
   }
 
-  loginStatus(navigate:boolean = false){
+  loginStatus(navigate: boolean = false) {
+    this.userRole.next('reader');
     this.isUserLoggedIn = true;
-    if (navigate)
-      this.router.navigateByUrl('main');
+    if (navigate){
+      if (this.stateUrl)
+        this.router.navigateByUrl(this.stateUrl);
+      else
+        this.router.navigateByUrl('main');
+    }
   }
 
   eventListener() {
@@ -131,6 +137,7 @@ export class AuthService implements OnDestroy {
   logOut(navigate: boolean = false) {
     this.http.get(this.apiUrl + 'auth/clear', { responseType: 'json' }).subscribe(_res => {
       this.userInfo.next(null);
+      this.userRole.next('reader');
       localStorage.clear();
       this.isUserLoggedIn = false;
       console.log('logout');
