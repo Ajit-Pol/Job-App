@@ -42,7 +42,7 @@ export class AuthService implements OnDestroy {
     // else
     //   this.logOut();
 
-    return this.http.get(this.apiUrl + 'auth/token', { withCredentials: true, responseType: 'json' });
+    return this.http.get(this.apiUrl + 'auth/token', { responseType: 'json' });
   }
 
   refreshAcessToken() {
@@ -129,8 +129,8 @@ export class AuthService implements OnDestroy {
   }
 
   logOut(navigate: boolean = false) {
-    this.http.get(this.apiUrl + 'auth/logout', { responseType: 'json' }).subscribe(_res => {
-      this.userInfo = null;
+    this.http.get(this.apiUrl + 'auth/clear', { responseType: 'json' }).subscribe(_res => {
+      this.userInfo.next(null);
       localStorage.clear();
       this.isUserLoggedIn = false;
       console.log('logout');

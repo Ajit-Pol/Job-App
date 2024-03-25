@@ -138,7 +138,7 @@ const refreshAccessToken = async (req, res) => {
         .json({ success: true, user: { name: user.name, role: user.role } });
 }
 
-const logOut = (req, res)=>{
+const clearCookies = (req, res)=>{
     res.status(StatusCodes.OK)
     .clearCookie("accessToken")
     .clearCookie("refreshToken")
@@ -153,6 +153,6 @@ module.exports = {
     validateOTP,
     saveNewPassword,
     refreshAccessToken,
-    logOut
+    clearCookies
 }
 
