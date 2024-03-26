@@ -55,7 +55,7 @@ UserSchema.pre('save', async function (next) {
     next()
 })
 
-UserSchema.methods.createJWT = function () {
+UserSchema.methods.createAccessToken = function () {
     return jwt.sign({ userId: this._id, name: this.name, role:this.role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFETIME })
 }
 

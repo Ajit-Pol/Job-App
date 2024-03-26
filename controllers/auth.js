@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const { UnauthenticatedError, NotFoundError, BadRequestError } = require('../errors');
 const cookieOptions = {
     httpOnly: true,
-    SameSite: process.env.NODE_ENV == 'production' ? 'Lax' : 'None',
-    secure: process.env.NODE_ENV == 'production'
+    SameSite: process.env.NODE_ENV == 'production' ? 'Strict' : 'None',
+    Secure : process.env.NODE_ENV == 'production'
 }
 
 const register = async (req, res, next) => {
@@ -27,7 +27,7 @@ const login = async (req, res) => {
         throw new UnauthenticatedError('Invalid email or password. Please check your credentials and try again.');
 
 
-    const accessToken = user.createJWT();
+    const accessToken = user.createAccessToken();
     const refreshToken = user.createRefreshToken();
     
     const token = await TOKEN.findOneAndUpdate({
@@ -38,10 +38,10 @@ const login = async (req, res) => {
     
     if (!token)
         await TOKEN.create({ userId: user._id, refreshToken: refreshToken })
-
+    
     res.status(StatusCodes.OK)
-        .cookie("accessToken", accessToken, cookieOptions)
-        .cookie("refreshToken", refreshToken, cookieOptions)
+        .cookie("accessToken", accessToken, {...cookieOptions, maxAge: process.env.ACCESS_TOKEN_LIFETIME })
+        .cookie("refreshToken", refreshToken, {...cookieOptions, maxAge: process.env.REFRESH_TOKEN_LIFETIME})
         .json({ success: true, user: { name: user.name, role: user.role } });
     // res.status(StatusCodes.OK).json({ success: true, user: { name: user.name, role: user.role }, accessToken: token, expiresIn: (Date.now() + Number(process.env.ACCESS_TOKEN_LIFETIME)) })
 }
@@ -124,7 +124,7 @@ const refreshAccessToken = async (req, res) => {
     if (tokenDetails.refreshToken !== reqRefreshToken)
         throw new UnauthenticatedError('Invalid refresh token.');
 
-    const accessToken = user.createJWT();
+    const accessToken = user.createAccessToken();
     const refreshToken = user.createRefreshToken();
     await TOKEN.findOneAndUpdate({
         userId: user._id
@@ -133,8 +133,8 @@ const refreshAccessToken = async (req, res) => {
     }, { new: true, runValidators: true })
 
     res.status(StatusCodes.OK)
-        .cookie("accessToken", accessToken, cookieOptions)
-        .cookie("refreshToken", refreshToken, cookieOptions)
+        .cookie("accessToken", accessToken, {...cookieOptions, maxAge: process.env.ACCESS_TOKEN_LIFETIME })
+        .cookie("refreshToken", refreshToken, {...cookieOptions, maxAge: process.env.REFRESH_TOKEN_LIFETIME})
         .json({ success: true, user: { name: user.name, role: user.role } });
 }
 
