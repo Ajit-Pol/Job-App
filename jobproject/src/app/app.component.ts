@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     this.bindRouteEvent();
   }
 
-  ngOnDestory(){
+  ngOnDestroy(){
     this.subscription.unsubscribe();
   }
 

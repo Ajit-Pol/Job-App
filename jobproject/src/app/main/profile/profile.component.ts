@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
     // this.createForm()
   }
 
-  ngOnDestory(){
+  ngOnDestroy(){
     this.subscription.unsubscribe();
   }
 

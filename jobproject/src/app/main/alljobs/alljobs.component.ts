@@ -33,7 +33,7 @@ export class AlljobsComponent {
     this.getAllJobs()
   }
 
-  ngOnDestory(){
+  ngOnDestroy(){
     this.subscription.unsubscribe();
   }
 

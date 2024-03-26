@@ -33,7 +33,7 @@ export class LandingComponent {
     this.changeTab(0, this.router.url);
   }
 
-  ngOnDestory() {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 

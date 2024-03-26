@@ -34,7 +34,7 @@ export class JobDetailsComponent implements OnInit {
     this.getJobDetails();
   }
 
-  ngOnDestory(){
+  ngOnDestroy(){
     this.subscription.unsubscribe();
   }
 
