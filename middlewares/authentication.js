@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const UserSchema = require('../dbmodels/auth');
-const { UnauthenticatedError } = require("../errors");
+const { UnauthenticatedError, BadRequestError } = require("../errors");
 
 const authenticationMiddleware = async (req, res, next) => {
     // let authToken = req.headers.authorization;
@@ -26,7 +26,7 @@ const validateEmail = async (req, res, next) => {
     const { type, email } = req.body;
     const user = await UserSchema.findOne({ email });
     if (!user)
-        throw new UnauthenticatedError('Invalid email.');
+        throw new BadRequestError('Please enter a valid email address. The email address you entered is not registered with us.');
     req.body = {
         type: type
     }

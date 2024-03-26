@@ -45,16 +45,19 @@ export class LoginComponent implements OnInit {
       let payload = new Login();
       payload.email = this.loginForm.get('email').value;
       payload.password = this.loginForm.get('password').value;
-      this.loginService.login(payload).subscribe((res: AuthInfo) => {
-        if (res?.success) {
-          this.authService.setUser(res?.user);
-          this.authService.loginStatus(true);
+      this.loginService.login(payload).subscribe({
+        next: (res: AuthInfo) => {
+          if (res?.success) {
+            this.authService.setUser(res?.user);
+            this.authService.loginStatus(true);
+          }
+          this.spinner.hide();
+        },
+        error: (error) => {
+          if (error?.status == 401)
+            this.errorMsg = error?.error?.msg
+          this.spinner.hide();
         }
-        this.spinner.hide();
-      }, (error) => {
-        if (error?.status == 401)
-          this.errorMsg = error?.error?.msg
-        this.spinner.hide();
       })
     }
   }
@@ -136,18 +139,23 @@ export class LoginComponent implements OnInit {
   sendOTPMail(controlValue) {
     this.spinner.show();
     let payload = { type: 'otp', email: controlValue }
-    this.loginService.sendOTP(payload).subscribe(res => {
-      if (res) {
-        this.currentUserEmail = controlValue;
-        this.status = 'otp';
-        this.controlButtton = 'Validate OTP';
-        this.errorMsg2 = null;
-        this.controlValue = null;
-        this.toasterService.showToaster(ToasterType.success, ToasterMessages.email);
+    this.loginService.sendOTP(payload).subscribe({
+      next: res => {
+        if (res) {
+          this.currentUserEmail = controlValue;
+          this.status = 'otp';
+          this.controlButtton = 'Validate OTP';
+          this.errorMsg2 = null;
+          this.controlValue = null;
+          this.toasterService.showToaster(ToasterType.success, ToasterMessages.email);
+        }
+        this.spinner.hide();
+      },
+      error: (error) => {
+        if (error?.status == 400)
+          this.errorMsg2 = error.error.msg;
+        this.spinner.hide();
       }
-      this.spinner.hide();
-    }, () => {
-      this.spinner.hide();
     })
   }
 
@@ -156,29 +164,39 @@ export class LoginComponent implements OnInit {
     const payload = {
       otp: otp
     }
-    this.loginService.ValidateOTP(payload).subscribe(res => {
-      if (res) {
-        this.status = 'password';
-        this.controlButtton = 'Save';
-        this.errorMsg = null;
-        this.controlValue = null;
+    this.loginService.ValidateOTP(payload).subscribe({
+      next: res => {
+        if (res) {
+          this.status = 'password';
+          this.controlButtton = 'Save';
+          this.errorMsg2 = null;
+          this.controlValue = null;
+        }
+        this.spinner.hide();
+      },
+      error: (error) => {
+        if (error?.status == 400)
+        this.errorMsg2 = error.error.msg;
+        this.spinner.hide();
       }
-      this.spinner.hide();
-    }, () => {
-      this.spinner.hide();
     })
   }
 
   saveNewPassword(controlValue) {
+    this.spinner.show();
     let payload = {
       email: this.currentUserEmail,
       password: controlValue
     }
-    this.loginService.resetPassword(payload).subscribe(res => {
-      if (res) {
-        this.closeModal();
-        this.toasterService.showToaster(ToasterType.success, ToasterMessages.passwordReset);
-      }
+    this.loginService.resetPassword(payload).subscribe({
+      next: res => {
+        if (res) {
+          this.closeModal();
+          this.toasterService.showToaster(ToasterType.success, ToasterMessages.passwordReset);
+          this.spinner.hide();
+        }
+      },
+      error: ()=> {this.spinner.hide();}
     })
   }
 }

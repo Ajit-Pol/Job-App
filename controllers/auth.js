@@ -79,7 +79,7 @@ validateOTP = async (req, res) => {
     })
 
     if (!data)
-        throw new BadRequestError('Invalid OTP');
+        throw new BadRequestError('Invalid OTP. The code you entered is incorrect or has expired.');
 
     // delete otp once it's validated 
     await OTP.findByIdAndDelete({

@@ -43,15 +43,18 @@ export class RegisterComponent {
       payload.location = this.registerForm?.value?.location;
       payload.password = this.registerForm?.value?.password;
 
-      this.loginService.register(payload).subscribe((res: any) => {
-        if (res?.success)
-          this.router.navigateByUrl('login');
+      this.loginService.register(payload).subscribe({
+        next: (res: any) => {
+          if (res?.success)
+            this.router.navigateByUrl('login');
           this.spinner.hide();
-      },(error)=>{
-        if(error?.error?.msg?.toLowerCase().includes('duplicate')){
-          this.errorMsg = " This email address is already registered. Please log in or use a different email address to create a new account."
+        },
+        error: (error) => {
+          if (error?.error?.msg?.toLowerCase().includes('duplicate')) {
+            this.errorMsg = " This email address is already registered. Please log in or use a different email address to create a new account."
+          }
+          this.spinner.hide();
         }
-        this.spinner.hide();
       })
     }
   }

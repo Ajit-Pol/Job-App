@@ -57,7 +57,7 @@
                     </div>
                     <div class="mb-3  position-relative">
                         <label  class="col-form-label"> Confirm Password </label>
-                        <input type="password" id="f-c-password" class="form-control"  [(ngModel)]="controlValue2"
+                        <input type="password" id="f-c-password" class="form-control" (paste)="$event.preventDefault()" [(ngModel)]="controlValue2"
                             (ngModelChange)="confirmPassword()">
                         <img class="form-eye-img cursor-pointer eye-top" src="assets/images/eye.svg" alt="eye icon"
                             (click)="showHidePassword('f-c-password')">

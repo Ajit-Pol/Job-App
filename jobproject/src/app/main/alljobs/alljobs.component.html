@@ -30,7 +30,7 @@
     </ng-container>
 
     <ng-template #nodata>
-        <div class="mt-4 mb-4 center_card">
+        <div class="mt-4 mb-4 center_card" *ngIf="jobsList?.length > 0">
             <strong>Oops!</strong>&nbsp;We couldn't find any results matching your search criteria. Please try again with different keywords or refine
             your search.
         </div>

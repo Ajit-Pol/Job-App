@@ -44,7 +44,7 @@ export class CommonhttpInterceptor implements HttpInterceptor {
       if (error.status == 401)
         return this.handle401Error(request, next, error);
       else
-        return throwError(() => { });
+        return throwError(() => { return error });
     }))
   }
 
@@ -69,7 +69,7 @@ export class CommonhttpInterceptor implements HttpInterceptor {
           this.authService.logOut(true);
           if (error.status != 401)
             this.handleError(error);
-          return throwError(() => { ogError });
+          return throwError(() => { return ogError });
         })
       )
   }
