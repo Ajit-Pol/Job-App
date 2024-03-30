@@ -66,7 +66,7 @@ export class CommonhttpInterceptor implements HttpInterceptor {
           }
         }),
         catchError((error: any) => {
-          this.authService.logOut(true);
+          this.authService.clear(true);
           if (error.status != 401)
             this.handleError(error);
           return throwError(() => { return ogError });

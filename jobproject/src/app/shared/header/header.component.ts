@@ -45,6 +45,6 @@ export class HeaderComponent implements OnInit {
 
   logOut(){
     this.authService.setLocalStorage('log-out',Math.random().toString());
-    this.authService.logOut(true);
+    this.authService.logOut();
   }
 }

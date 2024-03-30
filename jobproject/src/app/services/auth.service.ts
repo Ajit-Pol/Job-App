@@ -68,7 +68,7 @@ export class AuthService implements OnDestroy {
   storageEventListener(event: StorageEvent) {
     if (event.storageArea == localStorage) {
       if (event?.key && event.key == 'log-out') {
-        this.logOut(true);
+        this.logOut();
       }
     }
   }
@@ -134,16 +134,18 @@ export class AuthService implements OnDestroy {
     this.userRole.next(role);
   }
 
-  logOut(navigate: boolean = false) {
-    this.http.get(this.apiUrl + 'auth/clear', { responseType: 'json' }).subscribe(_res => {
-      this.userInfo.next(null);
-      this.userRole.next('reader');
-      localStorage.clear();
-      this.isUserLoggedIn = false;
-      console.log('logout');
-
-      if (navigate)
+  clear(navigate:boolean = false){
+    this.userInfo.next(null);
+    this.userRole.next('reader');
+    localStorage.clear();
+    this.isUserLoggedIn = false;
+    if (navigate)
         this.router.navigateByUrl('login');
+  }
+
+  logOut() {
+    this.http.get(this.apiUrl + 'auth/clear', { responseType: 'json' }).subscribe(_res => {
+      this.clear(true);
     })
   }
 }
