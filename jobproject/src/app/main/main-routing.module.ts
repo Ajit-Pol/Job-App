@@ -22,32 +22,37 @@ const routes: Routes = [
         component: AlljobsComponent,
         data: {
           role: ['reader', 'creator']
-        }
+        },
+        canActivate: [AuthGuard]
       },
       {
         path: 'add-job',
         component: AddJobComponent,
         data: {
           role: ['creator']
-        }
+        },
+        canActivate: [AuthGuard]
       },
       {
         path: 'edit-job/:id',
         component: AddJobComponent,
         data: {
           role: ['creator']
-        }
+        },
+        canActivate: [AuthGuard]
       },
       {
         path: 'detail-job/:id',
-        component: JobDetailsComponent
+        component: JobDetailsComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'profile',
         component: ProfileComponent,
         data: {
           role: ['reader', 'creator']
-        }
+        },
+        canActivate: [AuthGuard]
       }
     ]
   }

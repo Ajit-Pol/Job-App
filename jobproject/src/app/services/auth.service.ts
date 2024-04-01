@@ -4,6 +4,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject} from 'rxjs';
 import { AppService } from './app.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 // interface AuthInfo {
 //   success: boolean;
@@ -30,7 +31,8 @@ export class AuthService implements OnDestroy {
   stateUrl:string = null;
   constructor(private router: Router,
     private appService: AppService,
-    private http: HttpClient
+    private http: HttpClient,
+    private spinner:NgxSpinnerService
   ) {
     this.apiUrl = this.appService.environment.APIUrl;
     this.eventListener();
@@ -42,15 +44,17 @@ export class AuthService implements OnDestroy {
     //   this.userInfo = userInfo;
     // else
     //   this.logOut();
-
+    this.spinner.show();
     return this.http.get(this.apiUrl + 'auth/token', { responseType: 'json' });
   }
 
   refreshAcessToken() {
+    this.spinner.show();
     return this.http.get(this.apiUrl + 'auth/refresh', { responseType: 'json' })
   }
 
   loginStatus(navigate: boolean = false) {
+    this.spinner.hide();
     this.userRole.next('reader');
     this.isUserLoggedIn = true;
     if (navigate){
@@ -135,6 +139,7 @@ export class AuthService implements OnDestroy {
   }
 
   clear(navigate:boolean = false){
+    this.spinner.hide();
     this.userInfo.next(null);
     this.userRole.next('reader');
     localStorage.clear();

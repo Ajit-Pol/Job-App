@@ -20,12 +20,13 @@ const {
 } = require('./middlewares');
 const app = express();
 
-app.use(rateLimiter({
+const limiter = rateLimiter({
   windowMs: 15 * 60 * 1000,
   limit: 100,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-}))
+})
+
 app.use(helmet());
 
 const corsOptions = process.env.NODE_ENV == 'production' ? {} : {credentials: true, origin: 'http://localhost:4200'} ;
@@ -37,8 +38,8 @@ app.use(cookieParser());
 // app.use(logger('dev'));
 
 
-app.use('/jobapi/auth', authRouter);
-app.use('/jobapi/job',authenticationMiddleware, jobRouter);
+app.use('/jobapi/auth', limiter, authRouter);
+app.use('/jobapi/job', limiter, authenticationMiddleware, jobRouter);
 
 if (process.env.NODE_ENV == 'production') {
   console.log('Application running on production mode.');
