@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { AppService } from './services/app.service';
 import { AuthService } from './services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,10 @@ export class AppComponent implements OnInit {
   userRole:string = null;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private appService: AppService, private authService: AuthService
-  ) { 
+    private appService: AppService, private authService: AuthService, private spinner: NgxSpinnerService
+  ) {
+    this.spinner.show(); //on app load spinner
+    
     this.subscription = this.authService.getUserRole().subscribe(res => {
       if (res)
         this.userRole = res
