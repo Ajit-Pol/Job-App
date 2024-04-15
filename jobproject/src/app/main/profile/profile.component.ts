@@ -19,7 +19,8 @@ export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
   validationMessage = ValidationMessages;
   subscription:Subscription;
-
+  profileSrc:string = 'assets/images/default-profile.png';
+  profileId:string = null;
 
   constructor(private authService: AuthService, private toasterService:ToasterService,
     private formBuilder: FormBuilder, private mainService: MainService, private spinner: NgxSpinnerService) {
@@ -62,6 +63,8 @@ export class ProfileComponent implements OnInit {
     this.mainService.getProfile().subscribe((res: any) => {
       if (res && res.success) {
         let profileData = res.user;
+        this.profileId = profileData?.profileId || null
+        this.getFile()
         this.profileForm.patchValue({
           name: profileData?.name,
           email: profileData?.email,
@@ -82,9 +85,11 @@ export class ProfileComponent implements OnInit {
     this.mainService.saveProfile(this.profileForm.value).subscribe(res=>{
       if (res) {
         this.toasterService.showToaster(ToasterType.success, ToasterMessages.save);
+        this.getProfile();
         const user = {
           name: this.profileForm.value.name,
-          role: this.userRole
+          role: this.userRole,
+          profileId: this.profileId
         }
 
         this.authService.setUser(user);
@@ -111,4 +116,39 @@ export class ProfileComponent implements OnInit {
     return errMsg
   }
 
+  profilePhotoUpload(event) {
+    let file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      this.spinner.show();
+      this.mainService.fileUpload(formData).subscribe((res: any) => {
+        if (res && res?.src){
+          this.profileSrc = res.src;
+          const user = {
+            name: this.profileForm.value.name,
+            role: this.userRole,
+            profileId: res?.profileId
+          }
+          this.authService.setUser(user);
+        }
+        this.spinner.hide();
+      })
+    }
+  } 
+
+  getFile() {
+   this.profileId && this.mainService.getFile(this.profileId).subscribe((res: any) => {
+      if (res && res?.src){
+        this.profileSrc = res.src
+        // const user = {
+        //   name: this.profileForm.value.name,
+        //   role: this.userRole,
+        //   profileImg: this.profileSrc
+        // }
+        // this.authService.setUser(user);
+      }
+    })
+  }
+  
 }

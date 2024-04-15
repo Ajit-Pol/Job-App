@@ -12,8 +12,8 @@ const authenticationMiddleware = async (req, res, next) => {
     let authToken = req.cookies.accessToken;
     try {
         const jwtRes = await jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET);
-        let user = await UserSchema.findById(jwtRes.userId).select('_id name email role');
-        user = { userId: user._id, name: user.name, role: user.role, email: user.email };
+        let user = await UserSchema.findById(jwtRes.userId).select('_id name email role profileId');
+        user = { userId: user._id, name: user.name, role: user.role, email: user.email, profileId: user.profileId };
         req.user = user;
         next()
     } catch (error) {

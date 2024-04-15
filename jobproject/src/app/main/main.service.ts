@@ -45,4 +45,12 @@ export class MainService {
   sendEmail(payload){
     return this.http.post(this.apiUrl+'job/email',payload, { responseType:'json' })
   }
+
+  fileUpload(data) {   
+    return this.http.post(this.apiUrl + 'upload', data)
+  }
+
+  getFile(imageUId:string){
+    return this.http.get(this.apiUrl+'upload/'+ imageUId , { responseType: 'json' });
+  }
 }

@@ -16,7 +16,7 @@ router.get('/clear', clearCookies);
 router.use(authenticationMiddleware);
 router.route('/profile').get(getProfile).patch(saveProfile);
 router.route('/token').get((req,res)=>{
-    res.status(200).json({success:true, user:{ name: req.user.name, role: req.user.role}});
+    res.status(200).json({success:true, user:{ name: req.user.name, role: req.user.role, profileId: req.user.profileId}});
 })
 
 module.exports = router;

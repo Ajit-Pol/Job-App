@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MainService } from 'src/app/main/main.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -14,11 +15,15 @@ export class HeaderComponent implements OnInit {
   currentRole:string = null;
   toggleValue:boolean = true;
   subscription:Subscription;
-
-  constructor(private router:Router, private authService:AuthService){
+  profileSrc:string = 'assets/images/no-profile.svg'; 
+  constructor(private router:Router, private authService:AuthService, 
+    private mainService:MainService
+  ){
     this.subscription = this.authService.getUser().subscribe(res => {
-      if (res)
-      this.userInfo  = res;
+      if (res) {
+        this.userInfo = res;
+        this.getFile(this.userInfo?.profileId)
+      }
     })
   }
 
@@ -28,6 +33,14 @@ export class HeaderComponent implements OnInit {
 
   ngOnDestroy(){
     this.subscription.unsubscribe();
+  }
+
+  getFile(profileId) {
+    profileId && this.mainService.getFile(profileId).subscribe((res: any) => {
+      if (res && res?.src) {
+        this.profileSrc = res.src
+      }
+    })
   }
 
   navigateToMain(){

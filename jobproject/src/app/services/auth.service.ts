@@ -15,7 +15,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 interface UserInfo {
   name: string, 
-  role: string
+  role: string,
+  profileId: string;
 }
 
 @Injectable({

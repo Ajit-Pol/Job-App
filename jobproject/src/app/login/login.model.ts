@@ -12,7 +12,7 @@ export class Register {
 
 export interface AuthInfo  {
     success:boolean;
-    user:{name:string, role:string};
+    user:{name:string, role:string, profileId:string};
 }
 
 export class Regex {

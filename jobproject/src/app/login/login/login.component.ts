@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
       payload.password = this.loginForm.get('password').value;
       this.loginService.login(payload).subscribe({
         next: (res: AuthInfo) => {
-          if (res?.success) {
+          if (res?.success) {          
             this.authService.setUser(res?.user);
             this.authService.loginStatus(true);
           }

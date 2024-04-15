@@ -13,6 +13,7 @@ const rateLimiter = require('express-rate-limit');
 
 const authRouter = require('./routes/auth');
 const jobRouter = require('./routes/job');
+const uploadRouter = require('./routes/upload')
 const {
   notFoundMiddleware,
   errorHandlerMiddleware,
@@ -33,13 +34,14 @@ const corsOptions = process.env.NODE_ENV == 'production' ? {} : {credentials: tr
 app.use(cors(corsOptions))
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use(logger('dev'));
 
 
 app.use('/jobapi/auth', limiter, authRouter);
 app.use('/jobapi/job', limiter, authenticationMiddleware, jobRouter);
+app.use('/jobapi/upload', limiter, authenticationMiddleware, uploadRouter);
 
 if (process.env.NODE_ENV == 'production') {
   console.log('Application running on production mode.');

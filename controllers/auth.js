@@ -42,7 +42,7 @@ const login = async (req, res) => {
     res.status(StatusCodes.OK)
         .cookie("accessToken", accessToken, {...cookieOptions, maxAge: process.env.ACCESS_TOKEN_LIFETIME })
         .cookie("refreshToken", refreshToken, {...cookieOptions, maxAge: process.env.REFRESH_TOKEN_LIFETIME})
-        .json({ success: true, user: { name: user.name, role: user.role } });
+        .json({ success: true, user: { name: user.name, role: user.role, profileId: user.profileId } });
     // res.status(StatusCodes.OK).json({ success: true, user: { name: user.name, role: user.role }, accessToken: token, expiresIn: (Date.now() + Number(process.env.ACCESS_TOKEN_LIFETIME)) })
 }
 
