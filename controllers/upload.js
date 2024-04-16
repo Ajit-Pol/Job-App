@@ -4,6 +4,7 @@ const { StatusCodes } = require('http-status-codes');
 
 const fileUpload = async (req,res)=>{
     const { originalname, mimetype, buffer, size } = req.file;
+    const userId = req.user.userId;
     const fileData = {
         filename: originalname,
         fileSize: size,
@@ -11,7 +12,7 @@ const fileUpload = async (req,res)=>{
         data: buffer.toString('base64')
     }
 
-    const { profileId } = await UserSchema.findOne({ _id: req.user.userId }).select('profileId');
+    const { profileId } = await UserSchema.findOne({ _id: userId }).select('profileId');
     let file = null;
     if (profileId) {
        file = await FileSchema.findByIdAndUpdate({
@@ -25,6 +26,13 @@ const fileUpload = async (req,res)=>{
         throw new Error()
 
     const src = await file.createSrc();
+
+    const user = await UserSchema.findByIdAndUpdate({
+        _id: userId,
+    }, { profileId: file?._id }, { new: true, runValidators: true })
+
+    if(!user)
+        throw new Error();
 
     res.status(StatusCodes.OK).json({ success: true, src: src, profileId: file?._id });
 }
