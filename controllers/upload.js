@@ -1,6 +1,7 @@
 const FileSchema = require('../dbmodels/upload');
 const UserSchema = require('../dbmodels/auth');
 const { StatusCodes } = require('http-status-codes');
+const { BadRequestError } = require('../errors');
 
 const fileUpload = async (req,res)=>{
     const { originalname, mimetype, buffer, size } = req.file;
@@ -44,8 +45,24 @@ const getUploadFile = async (req,res)=>{
     res.status(StatusCodes.OK).json({ src });
 }
 
+const deleteFile = async (req,res)=>{
+    const fileId = req.params.id;
+    const file = await FileSchema.findByIdAndDelete({  _id: fileId });
+    if (!file)
+        throw new BadRequestError(`Invalid request, file not found`);
+
+    const user = await UserSchema.findByIdAndUpdate({
+        _id: req.user.userId,
+    }, { profileId: null }, { new: true, runValidators: true })
+
+    if (!user)
+        throw new BadRequestError();
+
+    res.status(StatusCodes.OK).json({msg:"Deleted successfully"});
+}
 
 module.exports = {
     fileUpload,
-    getUploadFile
+    getUploadFile,
+    deleteFile
 }

@@ -7,8 +7,14 @@
                 <input type="file" class="form-control" (change)="profilePhotoUpload($event)"> -->
                 <div class="profile-pic">                
                     <img alt="User Pic" [src]="profileSrc" id="profile-image1" height="200">
-                    <input id="profile-image-upload" class="profie-input" type="file" (change)="profilePhotoUpload($event)">
+                    <input id="profile-image-upload" #uploadfile class="profie-input" type="file" (change)="profilePhotoUpload($event)">
                     <div style="color:#999;"> </div>
+                </div>
+                <div *ngIf="profileId">
+                    <span (click)="removeProfileImg()">
+                        <img class="cross-img cursor-pointer" src="assets/images/red-close.svg" alt="">
+                        <button class="btn btn-link p-1">Delete Profile</button>
+                    </span>
                 </div>
             </div>
             <div class="mb-3">

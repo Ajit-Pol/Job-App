@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
     this.subscription = this.authService.getUser().subscribe(res => {
       if (res) {
         this.userInfo = res;
-        this.getFile(this.userInfo?.profileId)
+        this.userInfo?.profileId ? this.getFile(this.userInfo?.profileId) : this.profileSrc = 'assets/images/no-profile.svg'
       }
     })
   }
@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getFile(profileId) {
-    profileId && this.mainService.getFile(profileId).subscribe((res: any) => {
+    this.mainService.getFile(profileId).subscribe((res: any) => {
       if (res && res?.src) {
         this.profileSrc = res.src
       }

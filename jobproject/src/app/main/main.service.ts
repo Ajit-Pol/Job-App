@@ -53,4 +53,8 @@ export class MainService {
   getFile(imageUId:string){
     return this.http.get(this.apiUrl+'upload/'+ imageUId , { responseType: 'json' });
   }
+
+  deleteFile(imageUId:string) {
+    return this.http.delete(this.apiUrl+'upload/'+ imageUId , { responseType: 'json' });
+  }
 }

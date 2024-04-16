@@ -32,3 +32,12 @@
     left: 10px;
     cursor: pointer;
 }
+
+.btn-link {
+    text-decoration: none;
+}
+
+.cross-img {
+    height: 12px;
+    width: 12px;
+}

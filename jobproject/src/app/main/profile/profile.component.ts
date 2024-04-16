@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationMessages } from 'src/app/login/login.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
   subscription:Subscription;
   profileSrc:string = 'assets/images/default-profile.png';
   profileId:string = null;
+  @ViewChild('uploadfile') uploadfile: ElementRef;
 
   constructor(private authService: AuthService, private toasterService:ToasterService,
     private formBuilder: FormBuilder, private mainService: MainService, private spinner: NgxSpinnerService) {
@@ -125,6 +126,7 @@ export class ProfileComponent implements OnInit {
       this.mainService.fileUpload(formData).subscribe((res: any) => {
         if (res && res?.src){
           this.profileSrc = res.src;
+          this.profileId = res?.profileId;
           const user = {
             name: this.profileForm.value.name,
             role: this.userRole,
@@ -132,6 +134,7 @@ export class ProfileComponent implements OnInit {
           }
           this.authService.setUser(user);
         }
+        this.uploadfile.nativeElement.value = ''
         this.spinner.hide();
       })
     }
@@ -141,14 +144,23 @@ export class ProfileComponent implements OnInit {
    this.profileId && this.mainService.getFile(this.profileId).subscribe((res: any) => {
       if (res && res?.src){
         this.profileSrc = res.src
-        // const user = {
-        //   name: this.profileForm.value.name,
-        //   role: this.userRole,
-        //   profileImg: this.profileSrc
-        // }
-        // this.authService.setUser(user);
       }
     })
   }
+
+  removeProfileImg() {
+    this.profileId && this.mainService.deleteFile(this.profileId).subscribe((res: any) => {
+       if (res){
+        this.profileId = null;
+        this.profileSrc = 'assets/images/default-profile.png';
+        const user = {
+          name: this.profileForm.value.name,
+          role: this.userRole,
+          profileId: res?.profileId
+        }
+        this.authService.setUser(user);
+       }
+     })
+   }
   
 }
