@@ -40,4 +40,16 @@
     - MongoDB Atlas is used for cloud-based data storage.
     - Mongoose ORM is used for schema definitions and interactions with MongoDB.
    
-    
+## Visuals of JobQuest
+    ![image](https://github.com/user-attachments/assets/1b24adf6-a274-41e6-8b19-795b6be65d0e)
+    ![image](https://github.com/user-attachments/assets/b3f98a9a-c8db-443c-9e6a-a7b82d86fc25)
+    ![image](https://github.com/user-attachments/assets/4b2f6cbd-35a0-4f6b-ba28-0cdfd2a59878)
+    ![image](https://github.com/user-attachments/assets/55f70f29-c750-4f72-a763-4d9a4a4ba5f1)
+    ![image](https://github.com/user-attachments/assets/fdd50668-47b5-43dc-bcf9-801bd3df3a53)
+    ![image](https://github.com/user-attachments/assets/1383b55f-eb65-4cfe-a785-fd07676b62ec)
+
+
+
+
+
+
