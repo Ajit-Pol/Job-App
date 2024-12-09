@@ -41,6 +41,7 @@
     - Mongoose ORM is used for schema definitions and interactions with MongoDB.
    
 ## Visuals of JobQuest
+-
     ![image](https://github.com/user-attachments/assets/1b24adf6-a274-41e6-8b19-795b6be65d0e)
     ![image](https://github.com/user-attachments/assets/b3f98a9a-c8db-443c-9e6a-a7b82d86fc25)
     ![image](https://github.com/user-attachments/assets/4b2f6cbd-35a0-4f6b-ba28-0cdfd2a59878)
