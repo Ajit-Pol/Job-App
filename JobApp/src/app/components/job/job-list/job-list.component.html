@@ -1,0 +1,133 @@
+<div class="section position-relative d-flex align-items-center">
+  <div class="container px-5">
+    <div class="row">
+      <div>
+        <h1 class="fw-bold">
+          Find the most exciting jobs
+        </h1>
+        <div class="search-box mt-4 d-flex align-items-center">
+          <input type="text" class="form-control me-2" placeholder="Enter Job title to search..."
+            [(ngModel)]="searchKey" (ngModelChange)="clearSearch()" />
+          <!-- <input type="text" class="form-control me-2" placeholder="Location" /> -->
+          <button class="btn btn-primary px-4" (click)="searchJobs()">Find Job</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-3 py-5 border">
+      <div class="filter-section">
+        <!-- <h5 class="mb-3"><i class="bi bi-funnel"></i> Filter Jobs</h5> -->
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-3"><i class="bi bi-funnel"></i> Filter Jobs</h5>
+          <button id="clear-experience" class="btn btn-link text-decoration-none mb-2"
+            (click)="clearAllFilters(true);">Clear All</button>
+        </div>
+        <div class="filter-group mb-4">
+          <h6>Freshness</h6>
+          <select class="form-select" [(ngModel)]="freshness" (ngModelChange)="filterJobs()">
+           @if(!freshness){ <option value="" disabled>Select</option>}
+            <option value="30">Last 30 days</option>
+            <option value="15">Last 15 days</option>
+            <option value="7">Last 7 days</option>
+            <option value="3">Last 3 days</option>
+            <option value="1">Last 1 day</option>
+          </select>
+        </div>
+        <div class="filter-group mb-4">
+          <h6>Job Type</h6>
+          @for (type of filterJobTypes; track type?.displayValue; let i = $index ){
+          <div class="form-check">
+            <input class="form-check-input" name="filterJobType" type="checkbox" [id]="'type'+i" [value]="type?.actualValue"
+              (click)="onSelectJobType()">
+            <label class="form-check-label" [for]="'type'+i"> {{type?.displayValue}} </label>
+          </div>
+          }
+        </div>
+        <!-- <div class="filter-group mb-4">
+          <h6>Job Location</h6>
+          <select class="form-select">
+            <option>Anywhere</option>
+          </select>
+        </div> -->
+        <div class="filter-group">
+          <!-- <div class="d-flex justify-content-between align-items-center"> -->
+            <h6>Experience</h6>
+            <!-- <button id="clear-experience" class="btn btn-link text-decoration-none"
+              (click)="selectedExprience = []; filterJobs();">Clear</button>
+          </div> -->
+          @for (type of filterExprience; track type?.displayValue; let i = $index ){
+          <div class="form-check">
+            <input class="form-check-input" type="radio" [id]="'experience'+i" [value]="type?.actualValue"
+              [(ngModel)]="selectedExprience" (ngModelChange)="filterJobs()">
+            <label class="form-check-label" [for]="'experience'+i">{{type?.displayValue}}</label>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      @if(jobsList?.length > 0){
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <p class="m-0"></p>
+        <div>
+          <label for="sortBy" class="form-label me-2">Sort by</label>
+          <select id="sortBy" class="form-select d-inline-block w-auto" [(ngModel)]="sortByField"
+            (ngModelChange)="sortData()">
+            @if(!sortByField){ <option value="" disabled>Select</option>}
+            <option value="updatedAt">Date</option>
+            <option value="type">Type</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="job-listing">
+        @for (job of jobsList.slice((recPerPage*currentPageNum), ((recPerPage*currentPageNum)+recPerPage)); track
+        job._id) {
+        <div class="job-card shadow p-3 mb-5">
+          <div class="d-flex align-items-center cursor-pointer" (click)="navigateTOJobDetails(job?._id)">
+            <div class="job-info">
+              <h6 class="mb-1">{{job?.position}}</h6>
+              <p class="text-muted small m-0">{{job?.company}}</p>
+              <p class="text-muted small m-0"><i class="bi bi-geo-alt-fill"></i> {{job?.location}}</p>
+            </div>
+            <div class="ms-auto">
+              <span class="badge bg-light text-primary">{{job?.type}}</span>
+              <p class="text-muted small m-0"> {{job?.updatedAt | date: 'mediumDate'}}</p>
+              <!-- <p class="text-muted m-0">$3500 - $4000</p> -->
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+      @if(pagesArr?.length > 0){
+      <nav aria-label="Job Pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [ngClass]="{'disabled': currentPageNum == 0 }">
+            <a class="page-link cursor-pointer" tabindex="-1" aria-disabled="true" (click)="prevPage()">Previous</a>
+          </li>
+          @for (count of pagesArr; track count) {
+          <li class="page-item" [ngClass]="{'active': (count - 1) == currentPageNum }"><a
+              class="page-link cursor-pointer" (click)="specificPage(count - 1)">{{count}}</a></li>
+          }
+          <li class="page-item" [ngClass]="{'disabled': currentPageNum + 1 == pagesArr?.length }">
+            <a class="page-link cursor-pointer" (click)="nextPage()">Next</a>
+          </li>
+        </ul>
+      </nav>
+      }
+      }@else{
+        <div class="d-flex justify-content-center align-items-center no_data">
+          <div class="text-center">
+              <p class="h4">No results found matching your criteria</p>
+          </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>

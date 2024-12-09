@@ -1,0 +1,71 @@
+<div class="container my-5">
+  <div class="card-body p-4">
+    <h2 class="mb-4 heading_fw">{{formTitle}}</h2>
+    <form [formGroup]="addJobForm">
+      <div class="mb-3">
+        <label for="position" class="form-label">Position <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="position" placeholder="Enter the job position" [maxlength]="100"
+          formControlName="position" />
+      </div>
+
+      <div class="mb-3">
+        <label for="companyName" class="form-label">Company Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="companyName" placeholder="Enter the company name" [maxlength]="50"
+          formControlName="company" />
+      </div>
+
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Job Description <span class="text-danger">*</span></label>
+        <textarea class="form-control" id="description" rows="5" placeholder="Provide a job description"
+          formControlName="description" [maxlength]="500"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="requirement" class="form-label">Job Requirement <span class="text-danger">*</span></label>
+        <textarea class="form-control" id="requirement" rows="5"
+          placeholder="Enter the key knowledge, skills, and abilities required for the role."
+          formControlName="requirement" [maxlength]="500"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="exprience-required" class="form-label">Required Experience <span
+            class="text-danger">*</span></label>
+        <input type="number" min="0" max="99" class="form-control" id="exprience-required"
+          placeholder="Enter the minimum years of experience for this position." formControlName="exprience" />
+      </div>
+
+      <div class="mb-3">
+        <label for="vacancy" class="form-label">Vacancies Available <span class="text-danger">*</span></label>
+        <input type="number" min="0" max="99" class="form-control" id="vacancy"
+          placeholder="Enter the number of vacancies available for this role." formControlName="vacancy" />
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="location" placeholder="Enter the job location"
+          formControlName="location" />
+      </div>
+
+
+      <div class="mb-3">
+        <label for="jobType" class="form-label">Job Type <span class="text-danger">*</span></label>
+        <select class="form-select" id="jobType" formControlName="type">
+          <option value="" disabled selected>Choose job type</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Remote">Remote</option>
+          <option value="Freelance">Freelance</option>
+          <option value="Internship">Internship</option>
+        </select>
+      </div>
+
+
+      <div class="d-grid gap-2">
+        <button type="button" class="btn btn-primary" [ngClass]="{'disabled':addJobForm?.invalid}" (click)="addNewJob()">Save
+          Job</button>
+        <button type="button" class="btn btn-secondary"  (click)="onClickCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+.section {
+  background-color: #88f9f7;
+  min-height: 80vh;
+}
+
+.section h1 {
+  font-size: 3rem;
+  line-height: 1.3;
+  color: #333;
+}
+
+.search-box input {
+  height: 45px;
+}
+
+.search-box button {
+  height: 45px;
+  width: 20%;
+}
+
+.filter-section h5 {
+  font-weight: bold;
+}
+
+.filter-group h6 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.job-card img {
+  border-radius: 5px;
+}
+
+.job-info h6 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.job-listing {
+  padding-left: 3rem;
+  min-height: 542.38px;
+}
+
+.no_data {
+  height: 200px;
+}

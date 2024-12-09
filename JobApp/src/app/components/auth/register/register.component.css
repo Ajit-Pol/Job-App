@@ -1,0 +1,18 @@
+.card_c {
+    width: 400px;
+    border-radius: 10px;
+}
+
+.heading_fw {
+    font-weight: 600;
+}
+
+.relative_pos {
+    position: relative;
+}
+
+.form-eye-img{
+    position: absolute;
+    right: 5px;
+    top: 43px;
+}

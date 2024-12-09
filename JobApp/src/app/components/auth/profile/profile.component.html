@@ -1,0 +1,57 @@
+<div class="container my-5">
+    <div class="card-body p-4">
+        <h2 class="mb-4 heading_fw">Profile</h2>
+        <div class="text-center mb-4">
+            <label for="profilePhoto" class="form-label d-block">
+                <img [imageId]="profileId" [defaultImage]="'images/default-profile.png'" alt="Profile Photo" id="profilePhotoPreview" class="img-fluid rounded-circle profile_img" />
+            </label>
+            <input #uploadfile type="file"  class="form-control d-none" id="profilePhoto" accept="image/*" 
+            (change)="profilePhotoUpload($event)" />
+            <small class="text-muted" [ngClass]="{'cursor-pointer img_remove': profileSrc}"
+            (click)="removeProfileImg()" >{{ profileSrc ? 'Click here to remove photo' : 'Click on the photo to upload'}}</small>
+        </div>
+
+        <form [formGroup]="profileForm">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="name" placeholder="Enter the name"
+                    formControlName="name" />
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="email" placeholder="Enter the email"
+                    formControlName="email" />
+            </div>
+
+            <div class="mb-3">
+                <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="location" placeholder="Enter the job location"
+                    formControlName="location" />
+            </div>
+
+            <div class="mb-3">
+                <label for="exprience" class="form-label">Exprience <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="exprience" rows="5" placeholder="Provide a work exprience"
+                    formControlName="exprience" [maxlength]="500"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="projects" class="form-label">Projects <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="projects" rows="5" placeholder="Provide a your project details"
+                    formControlName="projects" [maxlength]="500"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="skills" class="form-label">Skills <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="skills" rows="5" placeholder="Provide a your skills"
+                    formControlName="skills" [maxlength]="500"></textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-primary" [ngClass]="{'disabled':profileForm?.invalid}"
+                (click)="submitProfile()">Save Profile</button>
+            </div>
+        </form>
+    </div>
+</div>

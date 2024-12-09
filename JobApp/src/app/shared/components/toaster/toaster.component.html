@@ -1,0 +1,15 @@
+@if(show){
+<div id="toaster-container" class="position-fixed" style="top: 1.5rem; right: 2rem; z-index: 1050;">
+    <div id="toaster-message" class="toast align-items-center border-0 shadow d-block min-w" role="alert"
+        aria-live="assertive" aria-atomic="true" [ngClass]="{'-success' : toaster.type == toasterType.success,
+        '-warning' : toaster.type == toasterType.warning}">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{toaster.message}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close" (click)="show = false"></button>
+        </div>
+    </div>
+</div>
+}

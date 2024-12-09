@@ -1,0 +1,35 @@
+<div class="container d-flex justify-content-center align-items-center my-5">
+  <div class="card card_c shadow-sm">
+    <div class="card-body p-4">
+      <h2 class="text-center mb-2 heading_fw">JobQuest </h2>
+      <p class="text-center text-muted">Login to your account</p>
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" ngModel
+            required email />
+        </div>
+
+        <div class="mb-3 relative_pos">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password"
+            ngModel required />
+          <img class="form-eye-img cursor-pointer" src="images/eye.svg" alt="eye icon"
+            (click)="showHidePassword('password')">
+        </div>
+
+        <div class="d-grid gap-2">
+
+          @if(errorMsg){<p class="text-danger">{{errorMsg}}</p>}
+          <button type="submit" class="btn btn-primary">Login</button>
+          <button type="button" class="btn btn-secondary" (click)="loginAsGuest()" >Continue as Guest</button>
+        </div>
+      </form>
+
+      <div class="text-center mt-3">
+        <a class="text-decoration-none me-3 cursor-pointer" (click)="navigateForgotPassword()" >Forgot Password?</a>
+        <a class="text-decoration-none cursor-pointer" (click)="navigateToRegister()">Register</a>
+      </div>
+    </div>
+  </div>
+</div>

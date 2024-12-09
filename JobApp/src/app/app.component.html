@@ -1,0 +1,25 @@
+<div class="container-fluid p-0">
+
+  @if(isUserAuthorized){
+    @if(showHeaderAndFooter){
+      <app-header></app-header>
+    }
+
+    <!-- toaster comp -->
+    <app-toaster></app-toaster>
+    <!-- toaster comp -->
+
+    <router-outlet />
+
+    @if(showHeaderAndFooter){
+      <app-footer></app-footer>
+    }
+  }
+
+
+
+  <!-- ngx-spinner -->
+  <ngx-spinner [fullScreen]="true" type="ball-spin-clockwise" size="medium"></ngx-spinner>
+  <!-- ngx-spinner -->
+
+</div>

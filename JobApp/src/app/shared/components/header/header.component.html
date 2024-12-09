@@ -1,0 +1,41 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-5">
+        <a class="navbar-brand d-flex align-items-center cursor-pointer" (click)="navigateToMain()">
+            <div class="logo-bg"></div>
+            <div class="logo"> J </div>
+            <span class="ms-2 fw-bold">JobQuest </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav navbar_ul-mr">
+                <li class="nav-item">
+                    <a class="nav-link cursor-pointer nav-link_fw" (click)="navigateToMyJobs()">My Jobs</a>
+                </li>
+            </ul>
+
+            @if(isLoggedIn){
+            <div class="dropdown" id="profile-header">
+                <button class="btn btn-light p-0 border-0 dropdown-toggle profile_circle" type="button"
+                    id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" (click)="showDrp = !showDrp">
+                    <img [imageId]="userInfo?.profileId" [defaultImage]="'images/default-profile.png'" alt="Profile" class="profile_img" id="header-profile-image" />
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" [ngClass]="{'show':showDrp}">
+                    <li><a class="dropdown-item cursor-pointer" (click)="navigateToProfile()">{{userInfo?.name}}</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item cursor-pointer" (click)="logOut()">Logout</a></li>
+                </ul>
+            </div>
+            }@else{
+            <div>
+                <a class="btn btn-outline-primary btn-sm mx-2" (click)="navigateToRegister()">Register</a>
+                <a class="btn btn-outline-primary btn-sm" (click)="navigateToLogin()">Login</a>
+            </div>
+            }
+        </div>
+    </nav>
+</header>

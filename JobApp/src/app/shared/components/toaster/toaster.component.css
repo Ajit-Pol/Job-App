@@ -1,0 +1,18 @@
+.-success {
+    background-color: #15a70c;
+    color: #fff;
+}
+
+.-warning {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.btn-close-white {
+    filter: invert(1);
+    opacity: 1;
+}
+
+.min-w {
+    min-width: 300px;
+}
