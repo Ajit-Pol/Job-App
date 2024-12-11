@@ -122,7 +122,7 @@ export class ForgotPasswordComponent {
       this.isPasswordMatch = true;
     } else {
       this.isPasswordMatch = false;
-      this.errorMsg = null;
+      this.errorMsg = null; 
     }
   }
 
