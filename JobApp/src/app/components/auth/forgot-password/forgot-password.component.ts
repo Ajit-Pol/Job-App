@@ -5,6 +5,7 @@ import { ToasterService } from '../../../shared/services/toaster.service';
 import { UserService } from '../user.service';
 import { ToasterMessages, ToasterType } from '../../../shared/shared.model';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -22,7 +23,7 @@ export class ForgotPasswordComponent {
   isPasswordMatch: boolean = false;
   currentUserEmail: string = null;
 
-  constructor(private spinner: NgxSpinnerService, private toasterService: ToasterService, private userService: UserService) {
+  constructor(private spinner: NgxSpinnerService, private toasterService: ToasterService, private userService: UserService,private router:Router) {
 
   }
 
@@ -108,11 +109,26 @@ export class ForgotPasswordComponent {
       next: res => {
         if (res) {
           this.toasterService.showToaster(ToasterType.success, ToasterMessages.passwordReset);
+          this.router.navigateByUrl('login');
           this.spinner.hide();
         }
       },
       error: () => { this.spinner.hide(); }
     })
+  }
+
+  confirmPassword() {
+    if (this.controlValue === this.controlValue2) {
+      this.isPasswordMatch = true;
+    } else {
+      this.isPasswordMatch = false;
+      this.errorMsg = null;
+    }
+  }
+
+  onChangeInPassword() {
+    this.controlValue2 = null;
+    this.errorMsg = null;
   }
 
   showHidePassword(id: string) {

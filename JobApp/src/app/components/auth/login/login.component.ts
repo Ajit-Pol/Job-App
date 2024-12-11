@@ -22,7 +22,6 @@ export class LoginComponent {
 
 
   login(form) {
-    console.log(form)
     if (this.validateFormData(form)) {
       this.spinner.show();
       let payload = new Login();
