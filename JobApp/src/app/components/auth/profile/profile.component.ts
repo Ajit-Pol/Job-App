@@ -76,7 +76,8 @@ export class ProfileComponent {
         this.getProfile();
         const user = {
           name: this.profileForm.value.name,
-          profileId: this.profileId
+          profileId: this.profileId,
+          profileSrc: this.profileSrc
         }
 
         this.authService.setUser(user);
@@ -115,7 +116,8 @@ export class ProfileComponent {
           this.profileId = res?.profileId;
           const user = {
             name: this.profileForm.value.name,
-            profileId: res?.profileId
+            profileId: res?.profileId,
+            profileSrc: this.profileSrc
           }
           this.authService.setUser(user);
         }
@@ -132,7 +134,8 @@ export class ProfileComponent {
         this.profileSrc = null;
         const user = {
           name: this.profileForm.value.name,
-          profileId: res?.profileId
+          profileId: res?.profileId,
+          profileSrc: this.profileSrc
         }
         this.authService.setUser(user);
       }

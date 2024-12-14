@@ -3,12 +3,12 @@
         <h2 class="mb-4 heading_fw">Profile</h2>
         <div class="text-center mb-4">
             <label for="profilePhoto" class="form-label d-block">
-                <img [imageId]="profileId" [defaultImage]="'images/default-profile.png'" alt="Profile Photo" id="profilePhotoPreview" class="img-fluid rounded-circle profile_img" />
+                <img [imageId]="profileId" [imageSrc]="profileSrc" [defaultImage]="'images/default-profile.png'" alt="Profile Photo" id="profilePhotoPreview" class="img-fluid rounded-circle profile_img" />
             </label>
             <input #uploadfile type="file"  class="form-control d-none" id="profilePhoto" accept="image/*" 
             (change)="profilePhotoUpload($event)" />
-            <small class="text-muted" [ngClass]="{'cursor-pointer img_remove': profileSrc}"
-            (click)="removeProfileImg()" >{{ profileSrc ? 'Click here to remove photo' : 'Click on the photo to upload'}}</small>
+            <small class="text-muted" [ngClass]="{'cursor-pointer img_remove': profileId}"
+            (click)="removeProfileImg()" >{{ profileId ? 'Click here to remove photo' : 'Click on the photo to upload'}}</small>
         </div>
 
         <form [formGroup]="profileForm">

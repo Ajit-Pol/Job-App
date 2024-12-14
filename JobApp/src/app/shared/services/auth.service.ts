@@ -9,6 +9,7 @@ interface UserInfo {
   name: string,
   role?: string,
   profileId: string;
+  profileSrc?: string;
 }
 
 @Injectable({

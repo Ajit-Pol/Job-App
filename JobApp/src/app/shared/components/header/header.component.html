@@ -20,7 +20,7 @@
             <div class="dropdown" id="profile-header">
                 <button class="btn btn-light p-0 border-0 dropdown-toggle profile_circle" type="button"
                     id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" (click)="showDrp = !showDrp">
-                    <img [imageId]="userInfo?.profileId" [defaultImage]="'images/default-profile.png'" alt="Profile" class="profile_img" id="header-profile-image" />
+                    <img [imageId]="userInfo?.profileId" [imageSrc]="userInfo?.profileSrc" [defaultImage]="'images/default-profile.png'" alt="Profile" class="profile_img" id="header-profile-image" />
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" [ngClass]="{'show':showDrp}">
                     <li><a class="dropdown-item cursor-pointer" (click)="navigateToProfile()">{{userInfo?.name}}</a></li>
